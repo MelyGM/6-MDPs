@@ -31,20 +31,29 @@ class Inventario(MDP):
         
     
     def acciones_legales(self, s):
-        #TODO: Completar este método
-        pass
+        return range(self.capacidad -s + 1)
     
     def recompensa(self, s, a, s_):
-        #TODO: Completar este método
-        pass
+        demanda = (s+a)-s_
+        venta = min(demanda, s+a)
+        ganancia = venta * self.precio_venta 
+        costo = a*self.costo_compra
+        if a > 0:
+            costo += self.costo_fijo
+        if s_ > 0:
+            costo += s_ * self.costo_almacen
+        if s_ < 0:
+            costo += abs(s_) * self.costo_backlog
+        return ganancia - costo
         
     def prob_transicion(self, s, a, s_):
-        #TODO: Completar este método
-        pass
+        demanda = (s+a)-s_
+        if demanda < 0:
+            return 0
+        return (self.lambda_**demanda * np.exp(-self.lambda_)) / np.math.factorial(demanda)
                 
     def es_terminal(self, s):
-        #TODO: Completar este método
-        pass
+        return False 
 
 
 if __name__ == "__main__":
