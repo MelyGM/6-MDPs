@@ -2,7 +2,7 @@
 Para desarrollar el problema del inventario.
 
 """
-
+import math
 from MDPs import MDP, iteracion_valor
 
 class Inventario(MDP):
@@ -27,15 +27,15 @@ class Inventario(MDP):
         self.costo_fijo=40
         self.costo_almacen=5
         self.costo_backlog=15
-        self.estados = tuple(range(inventario_min,capacidad+1))
+        self.estados = tuple(range(self.inventario_min,self.capacidad+1))
         
     
     def acciones_legales(self, s):
-        return range(self.capacidad -s + 1)
+        return range(max(0, self.capacidad - s + 1))
     
     def recompensa(self, s, a, s_):
         demanda = (s+a)-s_
-        venta = min(demanda, s+a)
+        venta = min(demanda, max(s+a, 0))
         ganancia = venta * self.precio_venta 
         costo = a*self.costo_compra
         if a > 0:
@@ -50,17 +50,16 @@ class Inventario(MDP):
         demanda = (s+a)-s_
         if demanda < 0:
             return 0
-        return (self.lambda_**demanda * np.exp(-self.lambda_)) / np.math.factorial(demanda)
-                
+        return (self.lambda_**demanda * math.exp(-self.lambda_)) / math.factorial(demanda)                
     def es_terminal(self, s):
         return False 
 
 
 if __name__ == "__main__":
 
-    inventario = Inventario(0.9, 0.5, ...)  #TODO: Agregar lo que se requiera
+    inventario = Inventario(gama=0.95, lambda_=4) 
 
-    pi_star, V = iteracion_valor(inventario, ...) #TODO: Agregar lo que se requiera
+    pi_star, V = iteracion_valor(inventario, epsilon=1e-4) 
 
     print("-" * 60)
     print("Estado".center(20) + "Acción".center(20) + "Valor".center(20))
