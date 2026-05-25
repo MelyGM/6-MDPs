@@ -17,12 +17,18 @@ class Inventario(MDP):
     
     """    
     
-    def __init__(self, gama,lambda_, ...): #TODO: Agregar lo que se requiera
-        #TODO: Completar el constructor
-        self.gamma = #TODO: Agregar lo que se requiera
-        self.lambda_ = #TODO: Agregar lo que se requiera
-        self.estados = #TODO: Agregar lo que se requiera
-        #TODO: Agregar lo que se requiera
+    def __init__(self, gama,lambda_): 
+        self.gamma = gama
+        self.lambda_ = lambda_
+        self.capacidad = 20
+        self.inventario_min = -10
+        self.precio_venta=150
+        self.costo_compra=80
+        self.costo_fijo=40
+        self.costo_almacen=5
+        self.costo_backlog=15
+        self.estados = tuple(range(inventario_min,capacidad+1))
+        
     
     def acciones_legales(self, s):
         #TODO: Completar este método
